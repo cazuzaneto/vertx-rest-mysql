@@ -21,3 +21,47 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+
+.idea
+*.iml
+
+
+HELP.md
+.gradle
+/target/
+/bin/
+/gradle/
+!gradle/wrapper/gradle-wrapper.jar
+!.mvn/wrapper/maven-wrapper.jar
+
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+*.iws
+*.ipr
+pre-commit-hook.sh
+/out/
+
+/nbproject/private/
+/build/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+/.apt_generated_tests/
+
+.vscode/
+/work
+
+# Terraform
+.terraform
+*.tfstate
+*.tfstate.*
+
+**/*.iml
