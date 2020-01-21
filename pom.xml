@@ -5,10 +5,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.cazuzaneto</groupId>
-  <artifactId>costumer-vertx</artifactId>
+  <artifactId>vertx-rest-mysql</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <properties>
+    <vertx.version>3.8.4</vertx.version>
     <maven.shade.pluginVersion>3.2.1</maven.shade.pluginVersion>
     <maven.compiler.pluginVersion>3.2</maven.compiler.pluginVersion>
     <suffix.build.jar>fat</suffix.build.jar>
@@ -24,12 +25,12 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-web</artifactId>
-      <version>3.8.1</version>
+      <version>${vertx.version}</version>
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-core</artifactId>
-      <version>3.8.1</version>
+      <version>${vertx.version}</version>
     </dependency>
     <dependency>
       <groupId>mysql</groupId>
@@ -44,12 +45,12 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-config</artifactId>
-      <version>3.8.4</version>
+      <version>${vertx.version}</version>
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-jdbc-client</artifactId>
-      <version>3.8.1</version>
+      <version>${vertx.version}</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -60,12 +61,12 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-unit</artifactId>
-      <version>3.8.4</version>
+      <version>${vertx.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
   <build>
-    <finalName>costumer</finalName>
+    <finalName>vertx-rest-mysql</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
