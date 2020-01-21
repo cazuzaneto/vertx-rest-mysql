@@ -7,6 +7,7 @@ This repository presents a use case for the Vertx project in the development of 
 The data migration process is being managed by Flyway. Data persistence is done with MySQL.
 
 ## TODO List
+- [ ] Create CRUD Async REST API  using Vertx tools
 - [x] Crete persistence strategy with MySql
 - [x] Implement Hexagonal Architecture strategy (isolate model)
 - [x] Migration data with Flyway

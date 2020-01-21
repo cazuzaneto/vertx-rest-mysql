@@ -5,7 +5,7 @@ Este repositório apresenta um caso de uso do projeto Vertx no desenvolvimento d
 O processo de migração de dados está sendo gerenciado pelo Flyway. Já e a persistência de dados é feita com o MySQL.
 
 ## TODO List
-
+- [ ] Criar uma api rest assíncrona usando as ferramentas do Vertx
 - [x] Criar estratétia de persistência com MySQL
 - [x] Implementar estratégia de arquitetura hexagonal (isolar o modelo)
 - [x] Migração de dados com Flyway
