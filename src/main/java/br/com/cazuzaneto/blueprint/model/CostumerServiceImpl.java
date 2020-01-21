@@ -21,7 +21,6 @@ public class CostumerServiceImpl implements CostumerService {
 
   @Override
   public Future<JsonObject> create(final JsonObject costumer) {
-  //  return this.repository.persist(costumer);
-    throw new RuntimeException();
+    return this.repository.persist(costumer);
   }
 }
