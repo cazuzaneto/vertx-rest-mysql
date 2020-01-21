@@ -1,6 +1,6 @@
-package io.costumer.framework.vertx;
+package br.com.cazuzaneto.blueprint.framework.vertx;
 
-import io.costumer.model.CostumerService;
+import br.com.cazuzaneto.blueprint.model.CostumerService;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.vertx.core.AbstractVerticle;
@@ -34,7 +34,7 @@ public class CostumerRestController extends AbstractVerticle {
       response.setStatusCode(503).end(NOT_TODAY);
     });
 
-    
+
     server.requestHandler(router).listen(this.config().getInteger("http.port"));
     super.start(startPromise);
   }

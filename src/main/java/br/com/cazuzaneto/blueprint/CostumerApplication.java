@@ -1,9 +1,9 @@
-package io.costumer;
+package br.com.cazuzaneto.blueprint;
 
-import io.costumer.framework.mysql.CostumerRepository;
-import io.costumer.framework.vertx.CostumerRestController;
-import io.costumer.framework.vertx.Config;
-import io.costumer.model.CostumerService;
+import br.com.cazuzaneto.blueprint.framework.mysql.CostumerRepository;
+import br.com.cazuzaneto.blueprint.framework.vertx.CostumerRestController;
+import br.com.cazuzaneto.blueprint.framework.vertx.Config;
+import br.com.cazuzaneto.blueprint.model.CostumerService;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;

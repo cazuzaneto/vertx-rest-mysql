@@ -1,4 +1,4 @@
-package io.costumer.framework.mysql;
+package br.com.cazuzaneto.blueprint.framework.mysql;
 
 import io.vertx.core.Future;
 import io.vertx.core.Promise;

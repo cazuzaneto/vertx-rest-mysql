@@ -1,4 +1,4 @@
-package io.costumer.model;
+package br.com.cazuzaneto.blueprint.model;
 
 import io.vertx.core.json.JsonObject;
 import lombok.Data;

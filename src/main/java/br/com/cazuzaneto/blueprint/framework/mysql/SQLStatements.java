@@ -1,4 +1,4 @@
-package io.costumer.framework.mysql;
+package br.com.cazuzaneto.blueprint.framework.mysql;
 
 interface SQLStatements {
   String SQL_INSERT = "INSERT INTO `costumer` " +

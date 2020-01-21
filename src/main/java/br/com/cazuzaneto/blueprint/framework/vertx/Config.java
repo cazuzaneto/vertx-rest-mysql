@@ -1,4 +1,4 @@
-package io.costumer.framework.vertx;
+package br.com.cazuzaneto.blueprint.framework.vertx;
 
 import io.vertx.config.ConfigRetriever;
 import io.vertx.config.ConfigRetrieverOptions;
