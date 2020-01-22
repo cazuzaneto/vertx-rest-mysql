@@ -10,3 +10,6 @@ O processo de migração de dados está sendo gerenciado pelo Flyway. Já e a pe
 - [x] Implementar estratégia de arquitetura hexagonal (isolar o modelo)
 - [x] Migração de dados com Flyway
 - [x] Criar gerenciamento de falhas nas requesições
+- [ ] Criar build com docker
+- [x] Usar o gerador de código do Vertx
+

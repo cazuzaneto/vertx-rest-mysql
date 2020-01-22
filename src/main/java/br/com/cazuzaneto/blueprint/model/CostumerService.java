@@ -12,7 +12,7 @@ public interface CostumerService {
     return new CostumerServiceImpl(repository);
   }
 
-  Future<List<JsonObject>> finAll();
+  Future<List<Costumer>> finAll();
 
   Future<JsonObject> finOne(String id);
 

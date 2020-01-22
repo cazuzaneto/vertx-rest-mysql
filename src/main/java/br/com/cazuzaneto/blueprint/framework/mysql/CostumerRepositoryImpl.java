@@ -1,5 +1,6 @@
 package br.com.cazuzaneto.blueprint.framework.mysql;
 
+import br.com.cazuzaneto.blueprint.model.Costumer;
 import br.com.cazuzaneto.blueprint.model.NotFoundException;
 import io.vertx.core.Future;
 import io.vertx.core.Promise;
@@ -10,7 +11,9 @@ import io.vertx.ext.jdbc.JDBCClient;
 import io.vertx.ext.sql.SQLClient;
 import io.vertx.ext.sql.SQLConnection;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class CostumerRepositoryImpl implements CostumerRepository {
   private final Vertx vertx;
@@ -24,17 +27,28 @@ class CostumerRepositoryImpl implements CostumerRepository {
   }
 
   @Override
-  public Future<List<JsonObject>> findAll() {
+  public Future<List<Costumer>> findAll() {
     return this.connection().compose(connection -> {
-      final Promise<List<JsonObject>> promise = Promise.promise();
+      final Promise<List<Costumer>> promise = Promise.promise();
       connection.query(SQLStatements.SQL_QUERY_ALL, resultSetAsyncResult -> {
         if (resultSetAsyncResult.failed()) {
           promise.fail(resultSetAsyncResult.cause());
           connection.close();
           return;
         }
-        promise.complete(resultSetAsyncResult.result().getRows());
-        connection.close();
+        List<JsonObject> rows = resultSetAsyncResult.result().getRows();
+        if (rows == null) {
+          promise.complete(Collections.emptyList());
+          return;
+        }
+        try {
+          List<Costumer> costumers = rows.stream().map(Costumer::new).collect(Collectors.toList());
+          connection.close();
+          promise.complete(costumers);
+        } catch (Exception e) {
+          connection.close();
+          promise.fail(e);
+        }
       });
       return promise.future();
     });

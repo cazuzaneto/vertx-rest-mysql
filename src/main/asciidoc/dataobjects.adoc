@@ -1,0 +1,16 @@
+= Cheatsheets
+
+[[Costumer]]
+== Costumer
+
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[email]]`@email`|`String`|-
+|[[id]]`@id`|`Number (long)`|-
+|[[name]]`@name`|`String`|-
+|[[password]]`@password`|`String`|-
+|===
+

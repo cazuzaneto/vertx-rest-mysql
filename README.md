@@ -13,3 +13,4 @@ The data migration process is being managed by [Flyway](https://flywaydb.org/). 
 - [x] Migration data with Flyway
 - [ ] Create request failure handler
 - [ ] Create docker build
+- [X] Use Vertx Code Generation

@@ -15,7 +15,7 @@ public class CostumerServiceImpl implements CostumerService {
   }
 
   @Override
-  public Future<List<JsonObject>> finAll() {
+  public Future<List<Costumer>> finAll() {
     return this.repository.findAll();
   }
 

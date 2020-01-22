@@ -1,7 +1,8 @@
 package br.com.cazuzaneto.blueprint;
 
 import br.com.cazuzaneto.blueprint.framework.mysql.CostumerRepository;
-import br.com.cazuzaneto.blueprint.framework.vertx.CostumerRestController;
+import br.com.cazuzaneto.blueprint.framework.vertx.CostumerRouter;
+import br.com.cazuzaneto.blueprint.framework.vertx.Server;
 import br.com.cazuzaneto.blueprint.framework.vertx.Config;
 import br.com.cazuzaneto.blueprint.model.CostumerService;
 import io.vertx.core.DeploymentOptions;
@@ -27,7 +28,8 @@ public class CostumerApplication {
       final CostumerRepository repository = CostumerRepository.create(vertx, config);
       final CostumerService service = CostumerService.persist(repository);
       final DeploymentOptions options = new DeploymentOptions().setConfig(config);
-      vertx.deployVerticle(new CostumerRestController(service), options);
+      final CostumerRouter router = new CostumerRouter(service);
+      vertx.deployVerticle(new Server(router), options);
       logger.info(APPLICATION_SUCCESS_INIT);
     });
   }
