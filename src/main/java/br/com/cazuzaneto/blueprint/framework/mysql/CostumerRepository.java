@@ -1,5 +1,6 @@
 package br.com.cazuzaneto.blueprint.framework.mysql;
 
+import br.com.cazuzaneto.blueprint.model.NotFoundException;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
@@ -18,4 +19,6 @@ public interface CostumerRepository {
   Future<SQLConnection> connection();
 
   Future<JsonObject> persist(JsonObject jsonObject);
+
+  Future<JsonObject> findOne(String id);
 }

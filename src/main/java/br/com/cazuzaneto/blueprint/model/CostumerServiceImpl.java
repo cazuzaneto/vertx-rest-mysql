@@ -20,7 +20,12 @@ public class CostumerServiceImpl implements CostumerService {
   }
 
   @Override
-  public Future<JsonObject> create(final JsonObject costumer) {
+  public Future<JsonObject> persist(final JsonObject costumer) {
     return this.repository.persist(costumer);
+  }
+
+  @Override
+  public Future<JsonObject> finOne(String id) {
+    return this.repository.findOne(id);
   }
 }

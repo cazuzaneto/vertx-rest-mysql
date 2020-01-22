@@ -25,7 +25,7 @@ public class CostumerApplication {
       final JsonObject config = asyncResult.result();
       initFlyway(config.getString("url"), config.getString("user"), config.getString("password"));
       final CostumerRepository repository = CostumerRepository.create(vertx, config);
-      final CostumerService service = CostumerService.create(repository);
+      final CostumerService service = CostumerService.persist(repository);
       final DeploymentOptions options = new DeploymentOptions().setConfig(config);
       vertx.deployVerticle(new CostumerRestController(service), options);
       logger.info(APPLICATION_SUCCESS_INIT);

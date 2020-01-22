@@ -8,11 +8,13 @@ import java.util.List;
 
 public interface CostumerService {
 
-  static CostumerService create(final CostumerRepository repository) {
+  static CostumerService persist(final CostumerRepository repository) {
     return new CostumerServiceImpl(repository);
   }
 
   Future<List<JsonObject>> finAll();
 
-  Future<JsonObject> create(JsonObject costumer);
+  Future<JsonObject> finOne(String id);
+
+  Future<JsonObject> persist(JsonObject costumer);
 }

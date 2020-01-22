@@ -1,5 +1,6 @@
 package br.com.cazuzaneto.blueprint.framework.mysql;
 
+import br.com.cazuzaneto.blueprint.model.NotFoundException;
 import io.vertx.core.Future;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
@@ -42,7 +43,6 @@ class CostumerRepositoryImpl implements CostumerRepository {
   @Override
   public Future<JsonObject> persist(final JsonObject object) {
     return this.connection().compose(connection -> {
-
       final Promise<JsonObject> promise = Promise.promise();
       connection.updateWithParams(SQLStatements.SQL_INSERT, new JsonArray()
           .add(object.getString("name"))
@@ -73,4 +73,32 @@ class CostumerRepositoryImpl implements CostumerRepository {
     });
     return promise.future();
   }
+
+  @Override
+  public Future<JsonObject> findOne(String id) {
+    return this.connection().compose(connection -> {
+      final Promise<JsonObject> promise = Promise.promise();
+      connection.queryWithParams(SQLStatements.SQL_QUERY, new JsonArray().add(id),
+        result -> {
+          try {
+            if (result.failed()) {
+              connection.close();
+              promise.fail(result.cause());
+              return;
+            }
+            if (result.result().getRows() == null || result.result().getRows().isEmpty()) {
+              promise.fail(new NotFoundException(String.format("Not found any Costumer with id %s", id)));
+              return;
+            }
+            promise.complete(result.result().getRows().get(0));
+            connection.close();
+          } catch (Exception e) {
+            promise.fail(e);
+          }
+        }
+      );
+      return promise.future();
+    });
+  }
+
 }
