@@ -79,7 +79,7 @@ class CostumerRepositoryImpl implements CostumerRepository {
               return;
             }
             final UpdateResult result1 = result.result();
-            final Integer json = result1.getKeys().getInteger(0);
+            final Integer json = result1.getKeys().getInteger(FIRST_INDEX);
             connection.close();
             promise.complete(json);
 
