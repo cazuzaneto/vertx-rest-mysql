@@ -6,7 +6,9 @@ This repository presents a use case for the [Eclipse Vertx](https://vertx.io/) i
 
 The data migration process is being managed by [Flyway](https://flywaydb.org/). Data persistence is done with [MySQL](https://www.mysql.com/).
 
-If you didn't want to install Mysql on your machine, you can use `docker-compose.yml` which has the database image for you. Just use the command `docker-compose up -d` that you will have MySql running on your machine through the docker.
+If you didn't want to install Mysql on your machine, you can use `docker/docker-compose.yml` which has the database image for you. Just use the command `docker-compose up -d` that you will have MySql running on your machine through the docker.
+
+The application can be launched directly from Maven: (a) to run it using the classes form target/classes: `mvn compile exec:java@run` or (b) to run the fat jar: `mvn package exec:exec@run-app`
 
 ## TODO List
 - [x] Create CRUD Async REST API  using Vertx toolkit;
