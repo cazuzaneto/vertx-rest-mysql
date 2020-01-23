@@ -9,7 +9,6 @@ import java.util.List;
  * @author Cazuza Neto
  */
 
-
 public interface CostumerService {
 
   static CostumerService persist(final CostumerRepository repository) {

@@ -7,6 +7,10 @@ import io.vertx.core.json.JsonObject;
 
 import java.util.Objects;
 
+/**
+ * @author Cazuza Neto
+ */
+
 @DataObject(generateConverter = true)
 public class Costumer {
   @JsonProperty(required = false, value = "id")
