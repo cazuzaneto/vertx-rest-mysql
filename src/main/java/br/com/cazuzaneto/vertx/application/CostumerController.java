@@ -1,7 +1,7 @@
-package br.com.cazuzaneto.blueprint.application;
+package br.com.cazuzaneto.vertx.application;
 
-import br.com.cazuzaneto.blueprint.model.Costumer;
-import br.com.cazuzaneto.blueprint.model.CostumerService;
+import br.com.cazuzaneto.vertx.model.Costumer;
+import br.com.cazuzaneto.vertx.model.CostumerService;
 import io.vertx.core.Future;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;

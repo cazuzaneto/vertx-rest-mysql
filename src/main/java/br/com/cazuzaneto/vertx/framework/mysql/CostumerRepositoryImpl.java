@@ -1,7 +1,7 @@
-package br.com.cazuzaneto.blueprint.framework.mysql;
+package br.com.cazuzaneto.vertx.framework.mysql;
 
-import br.com.cazuzaneto.blueprint.model.Costumer;
-import br.com.cazuzaneto.blueprint.model.NotFoundException;
+import br.com.cazuzaneto.vertx.model.Costumer;
+import br.com.cazuzaneto.vertx.model.NotFoundException;
 import io.vertx.core.Future;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;

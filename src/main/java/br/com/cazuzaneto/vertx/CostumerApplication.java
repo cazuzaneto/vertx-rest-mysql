@@ -1,13 +1,13 @@
-package br.com.cazuzaneto.blueprint;
+package br.com.cazuzaneto.vertx;
 
-import br.com.cazuzaneto.blueprint.application.CostumerController;
-import br.com.cazuzaneto.blueprint.framework.mysql.CostumerRepository;
-import br.com.cazuzaneto.blueprint.framework.vertx.ApplicationServer;
-import br.com.cazuzaneto.blueprint.framework.vertx.Config;
-import br.com.cazuzaneto.blueprint.framework.vertx.CostumerRouter;
-import br.com.cazuzaneto.blueprint.framework.vertx.FailureHandler;
-import br.com.cazuzaneto.blueprint.framework.vertx.ParamsConfig;
-import br.com.cazuzaneto.blueprint.model.CostumerService;
+import br.com.cazuzaneto.vertx.application.CostumerController;
+import br.com.cazuzaneto.vertx.framework.mysql.CostumerRepository;
+import br.com.cazuzaneto.vertx.framework.vertx.ApplicationServer;
+import br.com.cazuzaneto.vertx.framework.vertx.Config;
+import br.com.cazuzaneto.vertx.framework.vertx.CostumerRouter;
+import br.com.cazuzaneto.vertx.framework.vertx.FailureHandler;
+import br.com.cazuzaneto.vertx.framework.vertx.ParamsConfig;
+import br.com.cazuzaneto.vertx.model.CostumerService;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;

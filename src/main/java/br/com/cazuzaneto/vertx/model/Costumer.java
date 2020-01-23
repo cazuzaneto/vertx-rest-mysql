@@ -1,4 +1,4 @@
-package br.com.cazuzaneto.blueprint.model;
+package br.com.cazuzaneto.vertx.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

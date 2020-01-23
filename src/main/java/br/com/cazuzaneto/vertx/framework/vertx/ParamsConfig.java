@@ -1,4 +1,4 @@
-package br.com.cazuzaneto.blueprint.framework.vertx;
+package br.com.cazuzaneto.vertx.framework.vertx;
 
 /**
  * @author Cazuza Neto

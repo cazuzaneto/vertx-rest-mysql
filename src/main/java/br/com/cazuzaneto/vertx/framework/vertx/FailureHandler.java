@@ -1,6 +1,6 @@
-package br.com.cazuzaneto.blueprint.framework.vertx;
+package br.com.cazuzaneto.vertx.framework.vertx;
 
-import br.com.cazuzaneto.blueprint.model.NotFoundException;
+import br.com.cazuzaneto.vertx.model.NotFoundException;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpServerResponse;

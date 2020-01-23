@@ -1,6 +1,6 @@
-package br.com.cazuzaneto.blueprint.framework.mysql;
+package br.com.cazuzaneto.vertx.framework.mysql;
 
-import br.com.cazuzaneto.blueprint.model.Costumer;
+import br.com.cazuzaneto.vertx.model.Costumer;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;

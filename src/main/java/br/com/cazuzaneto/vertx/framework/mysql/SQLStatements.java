@@ -1,4 +1,4 @@
-package br.com.cazuzaneto.blueprint.framework.mysql;
+package br.com.cazuzaneto.vertx.framework.mysql;
 
 /**
  * @author Cazuza Neto

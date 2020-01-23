@@ -1,6 +1,6 @@
-package br.com.cazuzaneto.blueprint.framework.vertx;
+package br.com.cazuzaneto.vertx.framework.vertx;
 
-import br.com.cazuzaneto.blueprint.application.CostumerController;
+import br.com.cazuzaneto.vertx.application.CostumerController;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.vertx.core.http.HttpServerResponse;

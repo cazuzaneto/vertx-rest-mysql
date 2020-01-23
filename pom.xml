@@ -14,7 +14,7 @@
     <maven.compiler.pluginVersion>3.2</maven.compiler.pluginVersion>
     <suffix.build.jar>fat</suffix.build.jar>
     <javaVersion>1.8</javaVersion>
-    <main.class>br.com.cazuzaneto.blueprint.CostumerApplication</main.class>
+    <main.class>br.com.cazuzaneto.vertx.CostumerApplication</main.class>
   </properties>
   <dependencies>
     <dependency>

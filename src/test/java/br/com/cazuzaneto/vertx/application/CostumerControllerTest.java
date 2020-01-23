@@ -1,6 +1,6 @@
-package br.com.cazuzaneto.blueprint.application;
+package br.com.cazuzaneto.vertx.application;
 
-import br.com.cazuzaneto.blueprint.framework.vertx.Config;
+import br.com.cazuzaneto.vertx.framework.vertx.Config;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;

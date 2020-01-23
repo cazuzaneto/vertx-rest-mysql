@@ -1,6 +1,6 @@
-package br.com.cazuzaneto.blueprint.model;
+package br.com.cazuzaneto.vertx.model;
 
-import br.com.cazuzaneto.blueprint.framework.mysql.CostumerRepository;
+import br.com.cazuzaneto.vertx.framework.mysql.CostumerRepository;
 import io.vertx.core.Future;
 
 import java.util.List;
