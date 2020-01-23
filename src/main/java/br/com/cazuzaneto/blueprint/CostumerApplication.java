@@ -1,9 +1,12 @@
 package br.com.cazuzaneto.blueprint;
 
+import br.com.cazuzaneto.blueprint.application.CostumerController;
 import br.com.cazuzaneto.blueprint.framework.mysql.CostumerRepository;
-import br.com.cazuzaneto.blueprint.framework.vertx.CostumerRouter;
-import br.com.cazuzaneto.blueprint.framework.vertx.Server;
+import br.com.cazuzaneto.blueprint.framework.vertx.ApplicationServer;
 import br.com.cazuzaneto.blueprint.framework.vertx.Config;
+import br.com.cazuzaneto.blueprint.framework.vertx.CostumerRouter;
+import br.com.cazuzaneto.blueprint.framework.vertx.FailureHandler;
+import br.com.cazuzaneto.blueprint.framework.vertx.ParamsConfig;
 import br.com.cazuzaneto.blueprint.model.CostumerService;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
@@ -14,22 +17,23 @@ import org.flywaydb.core.Flyway;
 
 public class CostumerApplication {
   private static final Logger logger = LoggerFactory.getLogger(CostumerApplication.class);
-  private static final String APPLICATION_SUCCESS_INIT = "Application success init";
+  private static final String APPLICATION_SUCCESS_INIT = "Application Started";
 
   public static void main(final String[] args) {
     final Vertx vertx = Vertx.vertx();
     Config.createConfig(vertx).setHandler(asyncResult -> {
       if (asyncResult.failed()) {
-        logger.error("Error init!");
+        logger.error("Init Error");
         return;
       }
       final JsonObject config = asyncResult.result();
-      initFlyway(config.getString("url"), config.getString("user"), config.getString("password"));
+      initFlyway(config.getString(ParamsConfig.MYSQL_URL.label()), config.getString(ParamsConfig.MYSQL_USER.label()), config.getString(ParamsConfig.MYSQL_PASSWORD.label()));
       final CostumerRepository repository = CostumerRepository.create(vertx, config);
       final CostumerService service = CostumerService.persist(repository);
       final DeploymentOptions options = new DeploymentOptions().setConfig(config);
-      final CostumerRouter router = new CostumerRouter(service);
-      vertx.deployVerticle(new Server(router), options);
+      final CostumerController controller = new CostumerController(service);
+      final CostumerRouter router = new CostumerRouter(controller);
+      vertx.deployVerticle(new ApplicationServer(router, new FailureHandler()), options);
       logger.info(APPLICATION_SUCCESS_INIT);
     });
   }

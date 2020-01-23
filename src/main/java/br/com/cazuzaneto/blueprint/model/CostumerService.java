@@ -2,7 +2,6 @@ package br.com.cazuzaneto.blueprint.model;
 
 import br.com.cazuzaneto.blueprint.framework.mysql.CostumerRepository;
 import io.vertx.core.Future;
-import io.vertx.core.json.JsonObject;
 
 import java.util.List;
 
@@ -14,7 +13,11 @@ public interface CostumerService {
 
   Future<List<Costumer>> finAll();
 
-  Future<JsonObject> finOne(String id);
+  Future<Costumer> finOne(Integer id);
 
-  Future<JsonObject> persist(JsonObject costumer);
+  Future<Integer> persist(Costumer costumer);
+
+  Future<Void> update(Costumer costumer);
+
+  Future<Void> delete(Integer id);
 }

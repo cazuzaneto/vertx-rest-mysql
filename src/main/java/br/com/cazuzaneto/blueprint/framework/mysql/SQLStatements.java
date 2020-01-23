@@ -7,7 +7,6 @@ interface SQLStatements {
   String SQL_QUERY_ALL = "SELECT * FROM costumer";
   String SQL_UPDATE = "UPDATE `costumer`\n" +
     "SET\n" +
-    "`id` = ?,\n" +
     "`name` = ?,\n" +
     "`email` = ?,\n" +
     "`password` = ?\n" +

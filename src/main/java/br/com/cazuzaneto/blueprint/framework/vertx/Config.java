@@ -11,8 +11,7 @@ import io.vertx.core.json.JsonObject;
 public class Config {
   public static Future<JsonObject> createConfig(final Vertx vertx) {
     final Promise<JsonObject> promise = Promise.promise();
-    final ConfigRetriever retriever = ConfigRetriever.create(vertx, new ConfigRetrieverOptions()
-      .addStore(createOptions()));
+    final ConfigRetriever retriever = ConfigRetriever.create(vertx, new ConfigRetrieverOptions().addStore(createOptions()));
     retriever.getConfig(handler -> {
       if (handler.failed()) {
         promise.fail(handler.cause());
@@ -27,7 +26,6 @@ public class Config {
     return new ConfigStoreOptions()
       .setType("file")
       .setFormat("properties")
-      .setConfig(new JsonObject()
-        .put("path", "application.properties"));
+      .setConfig(new JsonObject().put("path", "application.properties"));
   }
 }

@@ -39,7 +39,6 @@ public class CostumerControllerTest {
   @Test
   public void testMyApplication(final TestContext context) {
     final Async async = context.async();
-    System.out.println(this.port);
     this.vertx.createHttpClient().getNow(this.port, "localhost", "/", response -> response.handler(body -> {
       context.assertTrue(body.toString().contains("Hello"));
       async.complete();

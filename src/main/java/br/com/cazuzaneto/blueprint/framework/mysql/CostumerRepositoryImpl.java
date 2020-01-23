@@ -10,12 +10,17 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.jdbc.JDBCClient;
 import io.vertx.ext.sql.SQLClient;
 import io.vertx.ext.sql.SQLConnection;
+import io.vertx.ext.sql.UpdateResult;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 class CostumerRepositoryImpl implements CostumerRepository {
+
+  private static final String NOT_FOUNDED = "Resource not founded";
+  private static final String NOT_FOUND_WITH_ID = "Not found any Costumer with id %s";
+  private static final int FIRST_INDEX = 0;
   private final Vertx vertx;
   private final JsonObject config;
   private final SQLClient client;
@@ -36,16 +41,16 @@ class CostumerRepositoryImpl implements CostumerRepository {
           connection.close();
           return;
         }
-        List<JsonObject> rows = resultSetAsyncResult.result().getRows();
+        final List<JsonObject> rows = resultSetAsyncResult.result().getRows();
         if (rows == null) {
           promise.complete(Collections.emptyList());
           return;
         }
         try {
-          List<Costumer> costumers = rows.stream().map(Costumer::new).collect(Collectors.toList());
+          final List<Costumer> costumers = rows.stream().map(Costumer::new).collect(Collectors.toList());
           connection.close();
           promise.complete(costumers);
-        } catch (Exception e) {
+        } catch (final Exception e) {
           connection.close();
           promise.fail(e);
         }
@@ -55,28 +60,31 @@ class CostumerRepositoryImpl implements CostumerRepository {
   }
 
   @Override
-  public Future<JsonObject> persist(final JsonObject object) {
+  public Future<Integer> persist(final Costumer costumer) {
     return this.connection().compose(connection -> {
-      final Promise<JsonObject> promise = Promise.promise();
+      final JsonObject object = costumer.toJson();
+      final Promise<Integer> promise = Promise.promise();
       connection.updateWithParams(SQLStatements.SQL_INSERT, new JsonArray()
           .add(object.getString("name"))
           .add(object.getString("email"))
           .add(object.getString("password"))
         , result -> {
           if (result.failed()) {
-            promise.fail(result.cause());
             connection.close();
+            promise.fail(result.cause());
             return;
           }
-          promise.complete(result.result().toJson());
+          final UpdateResult result1 = result.result();
+          final Integer json = result1.getKeys().getInteger(0);
           connection.close();
+          promise.complete(json);
         });
       return promise.future();
     });
   }
 
-  @Override
-  public Future<SQLConnection> connection() {
+
+  private Future<SQLConnection> connection() {
     final Promise<SQLConnection> promise = Promise.promise();
     this.client.getConnection(connectionAR -> {
       if (connectionAR.failed()) {
@@ -89,9 +97,9 @@ class CostumerRepositoryImpl implements CostumerRepository {
   }
 
   @Override
-  public Future<JsonObject> findOne(String id) {
+  public Future<Costumer> findOne(final Integer id) {
     return this.connection().compose(connection -> {
-      final Promise<JsonObject> promise = Promise.promise();
+      final Promise<Costumer> promise = Promise.promise();
       connection.queryWithParams(SQLStatements.SQL_QUERY, new JsonArray().add(id),
         result -> {
           try {
@@ -101,12 +109,13 @@ class CostumerRepositoryImpl implements CostumerRepository {
               return;
             }
             if (result.result().getRows() == null || result.result().getRows().isEmpty()) {
-              promise.fail(new NotFoundException(String.format("Not found any Costumer with id %s", id)));
+              promise.fail(new NotFoundException(String.format(NOT_FOUND_WITH_ID, id)));
               return;
             }
-            promise.complete(result.result().getRows().get(0));
+            final JsonObject result1 = result.result().getRows().get(FIRST_INDEX);
             connection.close();
-          } catch (Exception e) {
+            promise.complete(new Costumer(result1));
+          } catch (final Exception e) {
             promise.fail(e);
           }
         }
@@ -115,4 +124,60 @@ class CostumerRepositoryImpl implements CostumerRepository {
     });
   }
 
+  @Override
+  public Future<Void> update(final Costumer costumer) {
+    return this.connection().compose(connection -> {
+      final Promise<Void> promise = Promise.promise();
+      connection.updateWithParams(SQLStatements.SQL_UPDATE, new JsonArray()
+        .add(costumer.getName())
+        .add(costumer.getEmail())
+        .add(costumer.getPassword())
+        .add(costumer.getId()), result -> {
+        try {
+          if (result.failed()) {
+            connection.close();
+            promise.fail(result.cause());
+            return;
+          }
+          if (result.result().getUpdated() == 0) {
+            connection.close();
+            promise.fail(new NotFoundException(NOT_FOUNDED));
+            return;
+          }
+          connection.close();
+          promise.complete();
+        } catch (final Exception e) {
+          promise.fail(e);
+        }
+      });
+      return promise.future();
+    });
+  }
+
+  @Override
+  public Future<Void> delete(final Integer id) {
+    return this.connection().compose(connection -> {
+      final Promise<Void> promise = Promise.promise();
+      connection.updateWithParams(SQLStatements.SQL_DELETE, new JsonArray().add(id), result -> {
+        try {
+          if (result.failed()) {
+            promise.fail(result.cause());
+            connection.close();
+            return;
+          }
+          if (result.result().getUpdated() == 0) {
+            connection.close();
+            promise.fail(new NotFoundException("Resource not founded"));
+            return;
+          }
+          connection.close();
+          promise.complete();
+        } catch (final Exception e) {
+          connection.close();
+          promise.fail(e);
+        }
+      });
+      return promise.future();
+    });
+  }
 }

@@ -4,7 +4,6 @@ import br.com.cazuzaneto.blueprint.model.Costumer;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
-import io.vertx.ext.sql.SQLConnection;
 
 import java.util.List;
 
@@ -16,9 +15,11 @@ public interface CostumerRepository {
 
   Future<List<Costumer>> findAll();
 
-  Future<SQLConnection> connection();
+  Future<Integer> persist(Costumer costumer);
 
-  Future<JsonObject> persist(JsonObject jsonObject);
+  Future<Costumer> findOne(Integer id);
 
-  Future<JsonObject> findOne(String id);
+  Future<Void> update(Costumer costumer);
+
+  Future<Void> delete(Integer id);
 }

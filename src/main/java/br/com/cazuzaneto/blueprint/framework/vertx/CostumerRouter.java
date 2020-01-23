@@ -1,34 +1,31 @@
 package br.com.cazuzaneto.blueprint.framework.vertx;
 
-import br.com.cazuzaneto.blueprint.model.CostumerService;
+import br.com.cazuzaneto.blueprint.application.CostumerController;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.Json;
-import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 
 public class CostumerRouter {
   private static final String PARAM_ID = "id";
-  private static final String KEYS_PARAM = "keys";
-  private final CostumerService service;
+  private final CostumerController controller;
 
-  public CostumerRouter(CostumerService service) {
-    this.service = service;
+  public CostumerRouter(final CostumerController controller) {
+    this.controller = controller;
   }
 
   void createCostumer(final RoutingContext context) {
     context.request().bodyHandler(buffer -> {
         try {
-          this.service.persist(buffer.toJsonObject())
+          this.controller.persist(buffer.toJsonObject())
             .setHandler(handlerAllCostumers -> {
-              putHeaderDefault(context.response());
+              this.putHeaderDefault(context.response());
               if (handlerAllCostumers.failed()) {
                 context.fail(handlerAllCostumers.cause());
                 return;
               }
-              final JsonObject result = handlerAllCostumers.result();
-              String key = result.getJsonArray(KEYS_PARAM).getInteger(0).toString();
+              final Integer key = handlerAllCostumers.result();
               final String location = context.request().uri() + key;
               context.response()
                 .setStatusCode(HttpResponseStatus.CREATED.code())
@@ -42,12 +39,12 @@ public class CostumerRouter {
     );
   }
 
-  void findOneCostumer(RoutingContext context) {
+  void findOneCostumer(final RoutingContext context) {
     try {
-      String id = context.request().getParam(PARAM_ID);
-      service.finOne(id).setHandler(requestResult -> {
-        HttpServerResponse response = context.response();
-        putHeaderDefault(response);
+      final String id = context.request().getParam(PARAM_ID);
+      this.controller.finOne(id).setHandler(requestResult -> {
+        final HttpServerResponse response = context.response();
+        this.putHeaderDefault(response);
         if (requestResult.failed()) {
           context.fail(requestResult.cause());
           return;
@@ -57,15 +54,15 @@ public class CostumerRouter {
           .setStatusCode(HttpResponseStatus.OK.code())
           .end(body);
       });
-    } catch (Exception e) {
+    } catch (final Exception e) {
       context.fail(e);
     }
   }
 
   void findAllCostumers(final RoutingContext context) {
     try {
-      this.service.finAll().setHandler(handlerAllCostumers -> {
-        putHeaderDefault(context.response());
+      this.controller.getAll().setHandler(handlerAllCostumers -> {
+        this.putHeaderDefault(context.response());
         if (handlerAllCostumers.failed()) {
           context.fail(handlerAllCostumers.cause());
           return;
@@ -80,8 +77,43 @@ public class CostumerRouter {
     }
   }
 
-  private void putHeaderDefault(HttpServerResponse response) {
+  private void putHeaderDefault(final HttpServerResponse response) {
     response.putHeader("content-type", "application/json");
   }
 
+  void updateCostumer(final RoutingContext context) {
+    context.request().bodyHandler(buffer -> {
+      try {
+        this.controller.update(buffer.toJsonObject(), context.pathParam(PARAM_ID)).setHandler(handlerAllCostumers -> {
+          this.putHeaderDefault(context.response());
+          if (handlerAllCostumers.failed()) {
+            context.fail(handlerAllCostumers.cause());
+            return;
+          }
+          context.response()
+            .setStatusCode(HttpResponseStatus.NO_CONTENT.code())
+            .end();
+        });
+      } catch (final Exception e) {
+        context.fail(e);
+      }
+    });
+  }
+
+  void deleteCostumer(final RoutingContext context) {
+    try {
+      this.controller.delete(context.pathParam(PARAM_ID)).setHandler(handlerAllCostumers -> {
+        this.putHeaderDefault(context.response());
+        if (handlerAllCostumers.failed()) {
+          context.fail(handlerAllCostumers.cause());
+          return;
+        }
+        context.response()
+          .setStatusCode(HttpResponseStatus.NO_CONTENT.code())
+          .end();
+      });
+    } catch (final Exception e) {
+      context.fail(e);
+    }
+  }
 }
