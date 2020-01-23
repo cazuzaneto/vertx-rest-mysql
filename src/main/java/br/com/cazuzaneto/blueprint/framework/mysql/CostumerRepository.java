@@ -7,6 +7,10 @@ import io.vertx.core.json.JsonObject;
 
 import java.util.List;
 
+/**
+ * @author Cazuza Neto
+ */
+
 public interface CostumerRepository {
 
   static CostumerRepository create(final Vertx vertx, final JsonObject config) {

@@ -9,6 +9,10 @@ import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.RoutingContext;
 
+/**
+ * @author Cazuza Neto
+ */
+
 public class FailureHandler implements Handler<RoutingContext> {
   private static final String FAILURE_MESSAGE = "Internal error on request | [{0} {1}] -> Error: {2}";
   private static final String NOT_TODAY = "Sorry! Not today";
@@ -28,7 +32,7 @@ public class FailureHandler implements Handler<RoutingContext> {
       response.setStatusCode(HttpResponseStatus.UNPROCESSABLE_ENTITY.code()).end();
       return;
     }
-    
+
     response.setStatusCode(HttpResponseStatus.INTERNAL_SERVER_ERROR.code()).end(NOT_TODAY);
   }
 

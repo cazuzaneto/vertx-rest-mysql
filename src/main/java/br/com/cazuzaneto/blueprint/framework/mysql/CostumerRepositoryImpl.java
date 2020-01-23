@@ -16,6 +16,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author Cazuza Neto
+ */
+
 class CostumerRepositoryImpl implements CostumerRepository {
 
   private static final String NOT_FOUNDED = "Resource not founded";

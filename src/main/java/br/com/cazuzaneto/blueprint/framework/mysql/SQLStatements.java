@@ -1,5 +1,9 @@
 package br.com.cazuzaneto.blueprint.framework.mysql;
 
+/**
+ * @author Cazuza Neto
+ */
+
 interface SQLStatements {
   String SQL_INSERT = "INSERT INTO `costumer` " +
     "(`name`, `email`, `password`) VALUES (?, ?, ?)";
@@ -12,5 +16,4 @@ interface SQLStatements {
     "`password` = ?\n" +
     "WHERE `id` = ?;";
   String SQL_DELETE = "DELETE FROM `costumer` WHERE `id` = ?";
-  String SQL_DELETE_ALL = "DELETE FROM `costumer`";
 }

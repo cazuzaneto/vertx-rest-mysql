@@ -8,6 +8,10 @@ import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 
+/**
+ * @author Cazuza Neto
+ */
+
 public class Config {
   public static Future<JsonObject> createConfig(final Vertx vertx) {
     final Promise<JsonObject> promise = Promise.promise();

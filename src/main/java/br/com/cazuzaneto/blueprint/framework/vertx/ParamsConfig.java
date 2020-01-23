@@ -1,5 +1,9 @@
 package br.com.cazuzaneto.blueprint.framework.vertx;
 
+/**
+ * @author Cazuza Neto
+ */
+
 public enum ParamsConfig {
 
   HTTP_PORT("http.port"),

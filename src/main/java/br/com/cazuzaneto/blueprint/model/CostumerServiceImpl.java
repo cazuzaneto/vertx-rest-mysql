@@ -14,7 +14,7 @@ public class CostumerServiceImpl implements CostumerService {
   }
 
   @Override
-  public Future<List<Costumer>> finAll() {
+  public Future<List<Costumer>> findAll() {
     return this.repository.findAll();
   }
 
@@ -24,7 +24,7 @@ public class CostumerServiceImpl implements CostumerService {
   }
 
   @Override
-  public Future<Costumer> finOne(final Integer id) {
+  public Future<Costumer> findOne(final Integer id) {
     return this.repository.findOne(id);
   }
 

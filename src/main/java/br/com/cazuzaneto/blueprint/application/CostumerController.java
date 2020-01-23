@@ -9,6 +9,10 @@ import io.vertx.core.json.JsonObject;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author Cazuza Neto
+ */
+
 public class CostumerController {
 
   private final CostumerService service;
@@ -18,14 +22,14 @@ public class CostumerController {
   }
 
   public Future<List<JsonObject>> getAll() {
-    return this.service.finAll()
+    return this.service.findAll()
       .compose(list -> Future.succeededFuture(list.stream()
         .map(Costumer::toJson)
         .collect(Collectors.toList())));
   }
 
   public Future<JsonObject> finOne(final String id) {
-    return this.service.finOne(Integer.valueOf(id))
+    return this.service.findOne(Integer.valueOf(id))
       .compose(costumer -> Future.succeededFuture(costumer.toJson()));
   }
 

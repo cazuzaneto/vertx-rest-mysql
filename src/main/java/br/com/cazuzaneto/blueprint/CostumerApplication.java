@@ -15,6 +15,10 @@ import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import org.flywaydb.core.Flyway;
 
+/**
+ * @author Cazuza Neto
+ */
+
 public class CostumerApplication {
   private static final Logger logger = LoggerFactory.getLogger(CostumerApplication.class);
   private static final String APPLICATION_SUCCESS_INIT = "Application Started";

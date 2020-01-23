@@ -4,6 +4,10 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.ext.web.Router;
 
+/**
+ * @author Cazuza Neto
+ */
+
 public class ApplicationServer extends AbstractVerticle {
   private static final String HTTP_PORT = "http.port";
   private static final String COSTUMER_PATH = "/costumer/";

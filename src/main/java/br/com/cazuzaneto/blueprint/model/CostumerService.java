@@ -5,15 +5,20 @@ import io.vertx.core.Future;
 
 import java.util.List;
 
+/**
+ * @author Cazuza Neto
+ */
+
+
 public interface CostumerService {
 
   static CostumerService persist(final CostumerRepository repository) {
     return new CostumerServiceImpl(repository);
   }
 
-  Future<List<Costumer>> finAll();
+  Future<List<Costumer>> findAll();
 
-  Future<Costumer> finOne(Integer id);
+  Future<Costumer> findOne(Integer id);
 
   Future<Integer> persist(Costumer costumer);
 
