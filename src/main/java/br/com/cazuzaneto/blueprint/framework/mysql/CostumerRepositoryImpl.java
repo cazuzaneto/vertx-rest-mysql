@@ -68,15 +68,21 @@ class CostumerRepositoryImpl implements CostumerRepository {
           .add(costumer.getEmail())
           .add(costumer.getPassword())
         , result -> {
-          if (result.failed()) {
+          try {
+            if (result.failed()) {
+              connection.close();
+              promise.fail(result.cause());
+              return;
+            }
+            final UpdateResult result1 = result.result();
+            final Integer json = result1.getKeys().getInteger(0);
             connection.close();
-            promise.fail(result.cause());
-            return;
+            promise.complete(json);
+
+          } catch (final Exception e) {
+            connection.close();
+            promise.fail(e);
           }
-          final UpdateResult result1 = result.result();
-          final Integer json = result1.getKeys().getInteger(0);
-          connection.close();
-          promise.complete(json);
         });
       return promise.future();
     });
@@ -108,6 +114,7 @@ class CostumerRepositoryImpl implements CostumerRepository {
               return;
             }
             if (result.result().getRows() == null || result.result().getRows().isEmpty()) {
+              connection.close();
               promise.fail(new NotFoundException(String.format(NOT_FOUND_WITH_ID, id)));
               return;
             }
@@ -115,6 +122,7 @@ class CostumerRepositoryImpl implements CostumerRepository {
             connection.close();
             promise.complete(new Costumer(result1));
           } catch (final Exception e) {
+            connection.close();
             promise.fail(e);
           }
         }
@@ -146,6 +154,7 @@ class CostumerRepositoryImpl implements CostumerRepository {
           connection.close();
           promise.complete();
         } catch (final Exception e) {
+          connection.close();
           promise.fail(e);
         }
       });
@@ -160,8 +169,8 @@ class CostumerRepositoryImpl implements CostumerRepository {
       connection.updateWithParams(SQLStatements.SQL_DELETE, new JsonArray().add(id), result -> {
         try {
           if (result.failed()) {
-            promise.fail(result.cause());
             connection.close();
+            promise.fail(result.cause());
             return;
           }
           if (result.result().getUpdated() == 0) {
