@@ -19,13 +19,13 @@ public class CostumerRouter {
     context.request().bodyHandler(buffer -> {
         try {
           this.controller.persist(buffer.toJsonObject())
-            .setHandler(handlerAllCostumers -> {
+            .setHandler(persistHandler -> {
               this.putHeaderDefault(context.response());
-              if (handlerAllCostumers.failed()) {
-                context.fail(handlerAllCostumers.cause());
+              if (persistHandler.failed()) {
+                context.fail(persistHandler.cause());
                 return;
               }
-              final Integer key = handlerAllCostumers.result();
+              final Integer key = persistHandler.result();
               final String location = context.request().uri() + key;
               context.response()
                 .setStatusCode(HttpResponseStatus.CREATED.code())
@@ -42,14 +42,14 @@ public class CostumerRouter {
   void findOneCostumer(final RoutingContext context) {
     try {
       final String id = context.request().getParam(PARAM_ID);
-      this.controller.finOne(id).setHandler(requestResult -> {
+      this.controller.finOne(id).setHandler(findHandler -> {
         final HttpServerResponse response = context.response();
         this.putHeaderDefault(response);
-        if (requestResult.failed()) {
-          context.fail(requestResult.cause());
+        if (findHandler.failed()) {
+          context.fail(findHandler.cause());
           return;
         }
-        final String body = Json.encode(requestResult.result());
+        final String body = Json.encode(findHandler.result());
         response
           .setStatusCode(HttpResponseStatus.OK.code())
           .end(body);
@@ -61,13 +61,13 @@ public class CostumerRouter {
 
   void findAllCostumers(final RoutingContext context) {
     try {
-      this.controller.getAll().setHandler(handlerAllCostumers -> {
+      this.controller.getAll().setHandler(findHandler -> {
         this.putHeaderDefault(context.response());
-        if (handlerAllCostumers.failed()) {
-          context.fail(handlerAllCostumers.cause());
+        if (findHandler.failed()) {
+          context.fail(findHandler.cause());
           return;
         }
-        final String response = Json.encode(handlerAllCostumers.result());
+        final String response = Json.encode(findHandler.result());
         context.response()
           .setStatusCode(HttpResponseStatus.OK.code())
           .end(response);
@@ -77,17 +77,13 @@ public class CostumerRouter {
     }
   }
 
-  private void putHeaderDefault(final HttpServerResponse response) {
-    response.putHeader("content-type", "application/json");
-  }
-
   void updateCostumer(final RoutingContext context) {
     context.request().bodyHandler(buffer -> {
       try {
-        this.controller.update(buffer.toJsonObject(), context.pathParam(PARAM_ID)).setHandler(handlerAllCostumers -> {
+        this.controller.update(buffer.toJsonObject(), context.pathParam(PARAM_ID)).setHandler(updateHandler -> {
           this.putHeaderDefault(context.response());
-          if (handlerAllCostumers.failed()) {
-            context.fail(handlerAllCostumers.cause());
+          if (updateHandler.failed()) {
+            context.fail(updateHandler.cause());
             return;
           }
           context.response()
@@ -102,10 +98,10 @@ public class CostumerRouter {
 
   void deleteCostumer(final RoutingContext context) {
     try {
-      this.controller.delete(context.pathParam(PARAM_ID)).setHandler(handlerAllCostumers -> {
+      this.controller.delete(context.pathParam(PARAM_ID)).setHandler(deleteHandler -> {
         this.putHeaderDefault(context.response());
-        if (handlerAllCostumers.failed()) {
-          context.fail(handlerAllCostumers.cause());
+        if (deleteHandler.failed()) {
+          context.fail(deleteHandler.cause());
           return;
         }
         context.response()
@@ -115,5 +111,9 @@ public class CostumerRouter {
     } catch (final Exception e) {
       context.fail(e);
     }
+  }
+
+  private void putHeaderDefault(final HttpServerResponse response) {
+    response.putHeader("content-type", "application/json");
   }
 }
