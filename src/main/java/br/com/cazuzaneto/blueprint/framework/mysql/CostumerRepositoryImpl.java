@@ -62,12 +62,11 @@ class CostumerRepositoryImpl implements CostumerRepository {
   @Override
   public Future<Integer> persist(final Costumer costumer) {
     return this.connection().compose(connection -> {
-      final JsonObject object = costumer.toJson();
       final Promise<Integer> promise = Promise.promise();
       connection.updateWithParams(SQLStatements.SQL_INSERT, new JsonArray()
-          .add(object.getString("name"))
-          .add(object.getString("email"))
-          .add(object.getString("password"))
+          .add(costumer.getName())
+          .add(costumer.getEmail())
+          .add(costumer.getPassword())
         , result -> {
           if (result.failed()) {
             connection.close();
