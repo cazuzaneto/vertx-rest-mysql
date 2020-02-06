@@ -9,11 +9,11 @@ import java.util.List;
  * @author Cazuza Neto
  */
 
-public class CostumerServiceImpl implements CostumerService {
+class CostumerServiceImpl implements CostumerService {
 
   private final CostumerRepository repository;
 
-  public CostumerServiceImpl(final CostumerRepository repository) {
+  CostumerServiceImpl(final CostumerRepository repository) {
     this.repository = repository;
   }
 
