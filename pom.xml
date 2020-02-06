@@ -89,7 +89,7 @@
               </annotationProcessors>
               <generatedSourcesDirectory>${project.basedir}/src/main/generated</generatedSourcesDirectory>
               <compilerArgs>
-                <arg>-AoutputDirectory=${project.basedir}/src/main</arg>
+                <arg>-Acodegen.output=${project.basedir}/src/main</arg>
               </compilerArgs>
             </configuration>
           </execution>

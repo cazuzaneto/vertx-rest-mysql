@@ -2,18 +2,20 @@ package br.com.cazuzaneto.vertx;
 
 import br.com.cazuzaneto.vertx.application.CostumerController;
 import br.com.cazuzaneto.vertx.framework.mysql.CostumerRepository;
+import br.com.cazuzaneto.vertx.framework.mysql.FlywayInitializer;
 import br.com.cazuzaneto.vertx.framework.vertx.ApplicationServer;
 import br.com.cazuzaneto.vertx.framework.vertx.Config;
 import br.com.cazuzaneto.vertx.framework.vertx.CostumerRouter;
 import br.com.cazuzaneto.vertx.framework.vertx.FailureHandler;
-import br.com.cazuzaneto.vertx.framework.vertx.ParamsConfig;
 import br.com.cazuzaneto.vertx.model.CostumerService;
+import io.vertx.core.AbstractVerticle;
 import io.vertx.core.DeploymentOptions;
+import io.vertx.core.Future;
+import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
-import org.flywaydb.core.Flyway;
 
 /**
  * @author Cazuza Neto
@@ -25,25 +27,43 @@ public class CostumerApplication {
 
   public static void main(final String[] args) {
     final Vertx vertx = Vertx.vertx();
-    Config.createConfig(vertx).setHandler(asyncResult -> {
-      if (asyncResult.failed()) {
-        logger.error("Init Error");
-        return;
-      }
-      final JsonObject config = asyncResult.result();
-      initFlyway(config.getString(ParamsConfig.MYSQL_URL.label()), config.getString(ParamsConfig.MYSQL_USER.label()), config.getString(ParamsConfig.MYSQL_PASSWORD.label()));
-      final CostumerRepository repository = CostumerRepository.create(vertx, config);
-      final CostumerService service = CostumerService.persist(repository);
-      final DeploymentOptions options = new DeploymentOptions().setConfig(config);
-      final CostumerController controller = new CostumerController(service);
-      final CostumerRouter router = new CostumerRouter(controller);
-      vertx.deployVerticle(new ApplicationServer(router, new FailureHandler()), options);
-      logger.info(APPLICATION_SUCCESS_INIT);
-    });
+    Config.createConfig(vertx)
+      .compose(config -> {
+        try {
+          return new FlywayInitializer(vertx).init(config).compose($ -> createApplicationServer(vertx, config));
+        } catch (Exception e) {
+          return Future.failedFuture(e);
+        }
+      })
+      .setHandler(res -> {
+        if (res.failed()) {
+          logger.error("Init Error");
+          return;
+        }
+        logger.info(APPLICATION_SUCCESS_INIT);
+      });
   }
 
-  public static void initFlyway(final String url, final String user, final String pass) {
-    final Flyway flyway = Flyway.configure().dataSource(url, user, pass).load();
-    flyway.migrate();
+  private static Future<Void> createApplicationServer(final Vertx vertx, final JsonObject config) {
+    final CostumerRepository repository = CostumerRepository.create(vertx, config);
+    final CostumerService service = CostumerService.persist(repository);
+    final DeploymentOptions options = new DeploymentOptions().setConfig(config);
+    final CostumerController controller = new CostumerController(service);
+    final CostumerRouter router = new CostumerRouter(controller);
+    final ApplicationServer applicationServer = new ApplicationServer(router, new FailureHandler());
+    return deployVerticle(vertx, applicationServer, options);
   }
+
+  private static Future<Void> deployVerticle(final Vertx vertx, final AbstractVerticle verticle, final DeploymentOptions options) {
+    final Promise<Void> promise = Promise.promise();
+    vertx.deployVerticle(verticle, options, event -> {
+      if (event.failed()) {
+        promise.fail(event.cause());
+        return;
+      }
+      promise.complete();
+    });
+    return promise.future();
+  }
+
 }
