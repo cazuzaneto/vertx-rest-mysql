@@ -45,13 +45,17 @@ public class CostumerApplication {
   }
 
   private static Future<Void> createApplicationServer(final Vertx vertx, final JsonObject config) {
-    final CostumerRepository repository = CostumerRepository.create(vertx, config);
-    final CostumerService service = CostumerService.persist(repository);
-    final DeploymentOptions options = new DeploymentOptions().setConfig(config);
-    final CostumerController controller = new CostumerController(service);
-    final CostumerRouter router = new CostumerRouter(controller);
-    final ApplicationServer applicationServer = new ApplicationServer(router, new FailureHandler());
-    return deployVerticle(vertx, applicationServer, options);
+    try {
+      final CostumerRepository repository = CostumerRepository.create(vertx, config);
+      final CostumerService service = CostumerService.persist(repository);
+      final DeploymentOptions options = new DeploymentOptions().setConfig(config);
+      final CostumerController controller = new CostumerController(service);
+      final CostumerRouter router = new CostumerRouter(controller);
+      final ApplicationServer applicationServer = new ApplicationServer(router, new FailureHandler());
+      return deployVerticle(vertx, applicationServer, options);
+    } catch (final Exception e) {
+      return Future.failedFuture(e);
+    }
   }
 
   private static Future<Void> deployVerticle(final Vertx vertx, final AbstractVerticle verticle, final DeploymentOptions options) {
