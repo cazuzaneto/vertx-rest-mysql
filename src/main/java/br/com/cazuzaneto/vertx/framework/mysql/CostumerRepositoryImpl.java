@@ -41,8 +41,8 @@ class CostumerRepositoryImpl implements CostumerRepository {
       final Promise<List<Costumer>> promise = Promise.promise();
       connection.query(SQLStatements.SQL_QUERY_ALL, resultSetAsyncResult -> {
         if (resultSetAsyncResult.failed()) {
-          promise.fail(resultSetAsyncResult.cause());
           connection.close();
+          promise.fail(resultSetAsyncResult.cause());
           return;
         }
         final List<JsonObject> rows = resultSetAsyncResult.result().getRows();
