@@ -179,7 +179,7 @@ class CostumerRepositoryImpl implements CostumerRepository {
           }
           if (result.result().getUpdated() == 0) {
             connection.close();
-            promise.fail(new NotFoundException("Resource not founded"));
+            promise.fail(new NotFoundException(NOT_FOUNDED));
             return;
           }
           connection.close();
