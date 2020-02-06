@@ -1,4 +1,4 @@
-# REST API using Vertx project, Flayway and MySQL
+# REST API using Eclipse Vertx, Flayway and MySQL
 
 README in Portuguese: [here](docs/README.md)
 

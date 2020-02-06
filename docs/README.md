@@ -1,4 +1,4 @@
-# API REST usando o projeto Vertx, Flyway e MySQL
+# API REST usando o Eclipse Vertx, Flyway e MySQL
 
 Este repositório apresenta um caso de uso do [Eclipse Vertx](https://vertx.io/) no desenvolvimento de APIs REST Assícronas. Aqui o objetivo é mostrar algumas ferramentas que o Vertx dispõe, dentre elas estão, HTTP Server and Client, Router Context, JDBC Driver Async, Failure Handler, Application Configuration, Logger and more.
 
