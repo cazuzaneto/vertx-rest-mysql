@@ -25,14 +25,10 @@ class CostumerRepositoryImpl implements CostumerRepository {
   private static final String NOT_FOUNDED = "Resource not founded";
   private static final String NOT_FOUND_WITH_ID = "Not found any Costumer with id %s";
   private static final int FIRST_INDEX = 0;
-  private final Vertx vertx;
-  private final JsonObject config;
   private final SQLClient client;
 
   CostumerRepositoryImpl(final Vertx vertx, final JsonObject config) {
-    this.vertx = vertx;
-    this.config = config;
-    this.client = JDBCClient.createShared(vertx, this.config);
+    this.client = JDBCClient.createShared(vertx, config);
   }
 
   @Override
