@@ -68,8 +68,7 @@ class CostumerRepositoryImpl implements CostumerRepository {
         , result -> {
           try {
             if (result.failed()) {
-              connection.close();
-              promise.fail(result.cause());
+              this.closeConnection(connection, promise, result.cause());
               return;
             }
             final UpdateResult result1 = result.result();
@@ -78,8 +77,7 @@ class CostumerRepositoryImpl implements CostumerRepository {
             promise.complete(json);
 
           } catch (final Exception e) {
-            connection.close();
-            promise.fail(e);
+            this.closeConnection(connection, promise, e);
           }
         });
       return promise.future();
@@ -107,21 +105,18 @@ class CostumerRepositoryImpl implements CostumerRepository {
         result -> {
           try {
             if (result.failed()) {
-              connection.close();
-              promise.fail(result.cause());
+              this.closeConnection(connection, promise, result.cause());
               return;
             }
             if (result.result().getRows() == null || result.result().getRows().isEmpty()) {
-              connection.close();
-              promise.fail(new NotFoundException(String.format(NOT_FOUND_WITH_ID, id)));
+              this.closeConnection(connection, promise, new NotFoundException(String.format(NOT_FOUND_WITH_ID, id)));
               return;
             }
             final JsonObject result1 = result.result().getRows().get(FIRST_INDEX);
             connection.close();
             promise.complete(new Costumer(result1));
           } catch (final Exception e) {
-            connection.close();
-            promise.fail(e);
+            this.closeConnection(connection, promise, e);
           }
         }
       );
