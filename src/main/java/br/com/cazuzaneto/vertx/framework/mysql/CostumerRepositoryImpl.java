@@ -41,8 +41,7 @@ class CostumerRepositoryImpl implements CostumerRepository {
       final Promise<List<Costumer>> promise = Promise.promise();
       connection.query(SQLStatements.SQL_QUERY_ALL, resultSetAsyncResult -> {
         if (resultSetAsyncResult.failed()) {
-          connection.close();
-          promise.fail(resultSetAsyncResult.cause());
+          this.closeConnection(connection, promise, resultSetAsyncResult.cause());
           return;
         }
         final List<JsonObject> rows = resultSetAsyncResult.result().getRows();
@@ -55,8 +54,7 @@ class CostumerRepositoryImpl implements CostumerRepository {
           connection.close();
           promise.complete(costumers);
         } catch (final Exception e) {
-          connection.close();
-          promise.fail(e);
+          this.closeConnection(connection, promise, e);
         }
       });
       return promise.future();
@@ -146,20 +144,17 @@ class CostumerRepositoryImpl implements CostumerRepository {
         .add(costumer.getId()), result -> {
         try {
           if (result.failed()) {
-            connection.close();
-            promise.fail(result.cause());
+            this.closeConnection(connection, promise, result.cause());
             return;
           }
           if (result.result().getUpdated() == 0) {
-            connection.close();
-            promise.fail(new NotFoundException(NOT_FOUNDED));
+            this.closeConnection(connection, promise, new NotFoundException(NOT_FOUNDED));
             return;
           }
           connection.close();
           promise.complete();
         } catch (final Exception e) {
-          connection.close();
-          promise.fail(e);
+          this.closeConnection(connection, promise, e);
         }
       });
       return promise.future();
@@ -173,23 +168,25 @@ class CostumerRepositoryImpl implements CostumerRepository {
       connection.updateWithParams(SQLStatements.SQL_DELETE, new JsonArray().add(id), result -> {
         try {
           if (result.failed()) {
-            connection.close();
-            promise.fail(result.cause());
+            this.closeConnection(connection, promise, result.cause());
             return;
           }
           if (result.result().getUpdated() == 0) {
-            connection.close();
-            promise.fail(new NotFoundException(NOT_FOUNDED));
+            this.closeConnection(connection, promise, new NotFoundException(NOT_FOUNDED));
             return;
           }
           connection.close();
           promise.complete();
         } catch (final Exception e) {
-          connection.close();
-          promise.fail(e);
+          this.closeConnection(connection, promise, e);
         }
       });
       return promise.future();
     });
+  }
+
+  private void closeConnection(final SQLConnection connection, final Promise promise, final Throwable e2) {
+    connection.close();
+    promise.fail(e2);
   }
 }
