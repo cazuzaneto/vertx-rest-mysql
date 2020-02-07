@@ -24,6 +24,7 @@ import io.vertx.core.logging.LoggerFactory;
 public class CostumerApplication {
   private static final Logger logger = LoggerFactory.getLogger(CostumerApplication.class);
   private static final String APPLICATION_SUCCESS_INIT = "Application Started";
+  private static final String ERROR = "Init Error";
 
   public static void main(final String[] args) {
     final Vertx vertx = Vertx.vertx();
@@ -37,7 +38,7 @@ public class CostumerApplication {
       })
       .setHandler(res -> {
         if (res.failed()) {
-          logger.error("Init Error");
+          logger.error(ERROR);
           return;
         }
         logger.info(APPLICATION_SUCCESS_INIT);
